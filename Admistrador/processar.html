@@ -1,0 +1,100 @@
+
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Vinhas Infinito</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: #0b0f0c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* área da animação */
+.container {
+    position: relative;
+    width: 400px;
+    height: 200px;
+}
+
+/* cada “vinha” */
+.vinha {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #1e90ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #1e90ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="container"></div>
+
+<script>
+const container = document.getElementById("container");
+const vines = [];
+const total = 60;
+
+// curva do infinito
+function infinito(t) {
+    const a = 140;
+    const x = (a * Math.cos(t)) / (1 + Math.sin(t) * Math.sin(t));
+    const y = (a * Math.sin(t) * Math.cos(t)) / (1 + Math.sin(t) * Math.sin(t));
+    return { x, y };
+}
+
+// criar vinhas
+for (let i = 0; i < total; i++) {
+    const el = document.createElement("div");
+    el.className = "vinha";
+    container.appendChild(el);
+
+    vines.push({
+        el,
+        t: (i / total) * Math.PI * 2
+    });
+}
+
+let tempo = 0;
+
+// animação
+function animar() {
+    tempo += 0.06; // 🚀 mais rápido
+
+    const deslocamentoY = Math.sin(tempo) * 40;
+
+    vines.forEach(v => {
+
+        v.t += 0.015;
+
+        const p = infinito(v.t);
+
+        const cx = 200;
+        const cy = 100 + deslocamentoY;
+
+        v.el.style.left = (cx + p.x) + "px";
+        v.el.style.top = (cy + p.y) + "px";
+
+        // efeito pulsar
+        const scale = 1 + Math.sin(v.t * 3) * 0.6;
+        v.el.style.transform = `scale(${scale})`;
+    });
+
+    requestAnimationFrame(animar);
+}
+
+animar();
+</script>
+
+</body>
+</html>

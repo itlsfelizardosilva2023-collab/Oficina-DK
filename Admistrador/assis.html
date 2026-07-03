@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Assistente de Voz</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#0f172a;
+    color:white;
+    padding:30px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+button{
+    padding:15px 25px;
+    border:none;
+    background:#2563eb;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+#texto{
+    margin-top:20px;
+    padding:15px;
+    background:#1e293b;
+    border-radius:10px;
+}
+
+.card{
+    background:#1e293b;
+    margin-top:15px;
+    padding:15px;
+    border-radius:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎤 Assistente Empresarial</h1>
+
+    <button onclick="iniciarAssistente()">
+
+        Falar
+
+    </button>
+
+    <div id="texto">
+
+        Aguardando comando...
+
+    </div>
+
+    <div id="resultado"></div>
+
+</div>
+
+<script>
+
+/* =========================
+   RECONHECIMENTO DE VOZ
+========================= */
+
+function iniciarAssistente(){
+
+    const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+    const reconhecimento =
+    new SpeechRecognition();
+
+    reconhecimento.lang = 'pt-PT';
+
+    reconhecimento.start();
+
+    atualizarTexto(
+    "🎧 Ouvindo..."
+    );
+
+    reconhecimento.onresult = function(event){
+
+        let comando =
+        event.results[0][0].transcript
+        .toLowerCase();
+
+        atualizarTexto(
+        "Você falou: " + comando
+        );
+
+        processarComando(comando);
+    };
+
+    reconhecimento.onerror = function(){
+
+        responder(
+        "Erro ao reconhecer voz"
+        );
+    };
+}
+
+/* =========================
+   PROCESSAR COMANDOS
+========================= */
+
+function processarComando(comando){
+
+    let resultado =
+    document.getElementById("resultado");
+
+    resultado.innerHTML = "";
+
+
+/* =========================
+   CLIENTES
+========================= */
+
+    if(comando.includes("clientes")){
+
+        responder(
+        "Mostrando clientes"
+        );
+
+        resultado.innerHTML = `
+
+        <div class="card">
+
+            <h3>Clientes</h3>
+
+            <p>João</p>
+            <p>Maria</p>
+            <p>Carlos</p>
+
+        </div>
+
+        `;
+    }
+
+
+/* =========================
+   SERVIÇOS
+========================= */
+
+    else if(comando.includes("serviços")){
+
+        responder(
+        "Mostrando serviços"
+        );
+
+        resultado.innerHTML = `
+
+        <div class="card">
+
+            <h3>Serviços</h3>
+
+            <p>Troca de óleo</p>
+            <p>Alinhamento</p>
+            <p>Lavagem</p>
+
+        </div>
+
+        `;
+    }
+
+
+/* =========================
+   STOCK
+========================= */
+
+    else if(comando.includes("stock")){
+
+        responder(
+        "Mostrando stock"
+        );
+
+        resultado.innerHTML = `
+
+        <div class="card">
+
+            <h3>Produtos</h3>
+
+            <p>Pneu</p>
+            <p>Óleo</p>
+            <p>Filtro</p>
+
+        </div>
+
+        `;
+    }
+
+
+/* =========================
+   CAPITAL
+========================= */
+
+    else if(comando.includes("capital")){
+
+        responder(
+        "O capital da empresa é de 500 mil kwanzas"
+        );
+
+        resultado.innerHTML = `
+
+        <div class="card">
+
+            <h3>Capital</h3>
+
+            <h2>500.000 Kz</h2>
+
+        </div>
+
+        `;
+    }
+
+
+/* =========================
+   DESCONHECIDO
+========================= */
+
+    else{
+
+        responder(
+        "Comando não reconhecido"
+        );
+    }
+}
+
+
+/* =========================
+   FALAR
+========================= */
+
+function responder(texto){
+
+    let voz =
+    new SpeechSynthesisUtterance(texto);
+
+    voz.lang = 'pt-PT';
+
+    speechSynthesis.speak(voz);
+}
+
+
+/* =========================
+   TEXTO
+========================= */
+
+function atualizarTexto(texto){
+
+    document
+    .getElementById("texto")
+    .innerHTML = texto;
+}
+
+</script>
+
+</body>
+</html>

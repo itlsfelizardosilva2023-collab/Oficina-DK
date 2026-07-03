@@ -1,0 +1,354 @@
+
+
+<?php
+include("./configuracao/conexao.php");
+
+/* ================= BUSCAR CLIENTE ================= */
+if(isset($_GET['buscar_cliente'])){
+
+    $bi = mysqli_real_escape_string($conn, $_GET['buscar_cliente']);
+
+    $sql = mysqli_query($conn,"
+        SELECT nome 
+        FROM clientes 
+        WHERE numero_bi = '$bi'
+        LIMIT 1
+    ");
+
+    if(mysqli_num_rows($sql) > 0){
+
+        $d = mysqli_fetch_assoc($sql);
+
+        echo json_encode([
+            "status" => "sucesso",
+            "nome" => $d['nome']
+        ]);
+
+    } else {
+        echo json_encode(["status" => "erro"]);
+    }
+
+    exit;
+}
+
+/* ================= BUSCAR CARRO ================= */
+if(isset($_GET['buscar_carro'])){
+
+    $placa = mysqli_real_escape_string($conn, $_GET['buscar_carro']);
+
+    $sql = mysqli_query($conn, "
+        SELECT 
+            carros.*,
+            marcas.nome AS marca,
+            modelos.nome AS modelo
+        FROM carros
+
+        INNER JOIN modelos 
+        ON carros.id_modelo = modelos.id_modelo
+
+        INNER JOIN marcas 
+        ON modelos.id_marca = marcas.id_marca
+
+        WHERE carros.matricula = '$placa'
+        LIMIT 1
+    ");
+
+    if(mysqli_num_rows($sql) > 0){
+
+        $d = mysqli_fetch_assoc($sql);
+
+        echo json_encode([
+            "status" => "sucesso",
+            "marca" => $d['marca'],
+            "modelo" => $d['modelo']
+        ]);
+
+    } else {
+        echo json_encode(["status" => "erro"]);
+    }
+
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Contrato</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.containerc{
+    display:flex;
+    justify-content:center;
+}
+
+.rightc{
+    width:100%;
+    max-width:1200px;
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+}
+
+h2{
+    color:#12345b;
+}
+
+.grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.gridViatura{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 120px 120px 50px;
+    gap:10px;
+    margin-top:10px;
+}
+
+input{
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.addLinha{
+    margin-top:10px;
+    padding:10px;
+    background:#dfe9f5;
+    border:none;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.remover{
+    background:red;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.totalBox{
+    margin-top:20px;
+    background:#12345b;
+    color:#fff;
+    padding:20px;
+    border-radius:10px;
+    width:250px;
+    margin-left:auto;
+}
+
+.botoes{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.salvar{
+    background:#12345b;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+}
+
+.Voltar{
+    background:#eee;
+    padding:12px 20px;
+    border-radius:8px;
+    text-decoration:none;
+    color:#000;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="containerc">
+
+<div class="rightc">
+
+<h2>CONTRATO</h2>
+
+<form method="POST">
+
+<!-- CLIENTE -->
+<label>Cliente</label>
+
+<div class="grid2">
+
+<input type="text" id="bi" name="numero_bi" placeholder="NIF / BI">
+<input type="text" id="nome" name="nome" placeholder="Nome Cliente">
+
+<input type="date" name="data_inicio">
+<input type="date" name="data_fim">
+
+</div>
+
+<!-- VIATURAS -->
+<label>Viaturas</label>
+
+<div id="viaturas">
+
+<div class="gridViatura linhaViatura">
+
+<input type="text" class="placa" name="placa[]" placeholder="Placa">
+<input type="text" class="marca" name="marca[]" placeholder="Marca">
+<input type="text" class="modelo" name="modelo[]" placeholder="Modelo">
+
+<input type="number" name="quantidade_viatura[]" value="1">
+<input type="number" name="preco_viatura[]" value="0">
+
+<button type="button" class="remover" onclick="remover(this)">X</button>
+
+</div>
+
+</div>
+
+<button type="button" class="addLinha" onclick="addViatura()">+ Adicionar Viatura</button>
+
+<!-- TOTAL -->
+<div class="totalBox">
+<h3>Total</h3>
+<h1 id="total">0 Akz</h1>
+</div>
+
+<!-- BOTÕES -->
+<div class="botoes">
+<button class="salvar">GERAR</button>
+<a class="Voltar" href="#">Voltar</a>
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+/* ================= CLIENTE ================= */
+document.getElementById("bi").addEventListener("keyup", function(){
+
+    fetch("?buscar_cliente=" + this.value)
+    .then(r => r.json())
+    .then(d => {
+        if(d.status === "sucesso"){
+            document.getElementById("nome").value = d.nome;
+        }
+    });
+
+});
+
+
+/* ================= CARRO POR LINHA ================= */
+document.addEventListener("input", function(e){
+
+    if(e.target.classList.contains("placa")){
+
+        let linha = e.target.closest(".linhaViatura");
+
+        fetch("?buscar_carro=" + e.target.value)
+        .then(r => r.json())
+        .then(d => {
+
+            if(d.status === "sucesso"){
+
+                linha.querySelector(".marca").value = d.marca;
+                linha.querySelector(".modelo").value = d.modelo;
+
+            }
+
+        });
+
+    }
+
+    /* sempre que mexer em valores → recalcula total */
+    if(
+        e.target.classList.contains("precoViatura") ||
+        e.target.classList.contains("qtdViatura")
+    ){
+        calcularTotal();
+    }
+
+});
+
+
+/* ================= ADICIONAR VIATURA ================= */
+function addViatura(){
+
+    let div = document.createElement("div");
+
+    div.classList.add("gridViatura","linhaViatura");
+
+    div.innerHTML = `
+        <input type="text" class="placa" name="placa[]" placeholder="Placa">
+        <input type="text" class="marca" name="marca[]" placeholder="Marca">
+        <input type="text" class="modelo" name="modelo[]" placeholder="Modelo">
+
+        <input type="number" class="qtdViatura" name="quantidade_viatura[]" value="1">
+        <input type="number" class="precoViatura" name="preco_viatura[]" value="0">
+
+        <button type="button" class="remover" onclick="remover(this)">X</button>
+    `;
+
+    document.getElementById("viaturas").appendChild(div);
+
+    calcularTotal();
+}
+
+
+/* ================= REMOVER ================= */
+function remover(btn){
+    btn.parentElement.remove();
+    calcularTotal();
+}
+
+
+
+function calcularTotal(){
+
+    let total = 0;
+
+    /* percorre TODAS as linhas de viatura */
+    document.querySelectorAll(".linhaViatura").forEach(linha => {
+
+        let qtd = parseFloat(linha.querySelector(".qtdViatura")?.value) || 0;
+        let preco = parseFloat(linha.querySelector(".precoViatura")?.value) || 0;
+
+        total += qtd * preco;
+
+    });
+
+    /* percorre TODAS as linhas de serviços (se existir) */
+    document.querySelectorAll(".linha").forEach(linha => {
+
+        let qtd = parseFloat(linha.querySelector(".quantidade")?.value) || 0;
+        let preco = parseFloat(linha.querySelector(".preco")?.value) || 0;
+
+        total += qtd * preco;
+
+    });
+
+    /* mostra o total final */
+    document.getElementById("total").innerHTML =
+        total.toLocaleString("pt-PT") + " Akz";
+}
+
+calcularTotal();
+
+</script>
+
+</body>
+</html>

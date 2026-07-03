@@ -1,0 +1,110 @@
+
+
+:root {
+    --cor-branca: #fff;
+    --cor-azul: #00bfff;
+    --tempo-animacao: 0.8s;
+    --tamanho-par: 40px;
+    --tamanho-bola: 15px;
+    --distancia-troca: 20px;
+    --altura-subida: -50px;
+}
+
+body {
+    background:#eee4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container */
+.motor {
+    display: flex;
+    gap: 30px;
+}
+
+/* Pausa animação no hover */
+.motor:hover .par,
+.motor:hover .bola {
+    animation-play-state: paused;
+}
+
+/* Par de bolas */
+.par {
+    position: relative;
+    width: var(--tamanho-par);
+    height: var(--tamanho-par);
+    animation: subir var(--tempo-animacao) infinite ease-in-out;
+    will-change: transform;
+}
+
+/* Movimento vertical */
+@keyframes subir {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(var(--altura-subida)); }
+}
+
+/* Sincronização */
+.par:nth-child(1),
+.par:nth-child(3) {
+    animation-delay: 0s;
+}
+
+.par:nth-child(2),
+.par:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* Bolas */
+.bola {
+    position: absolute;
+    width: var(--tamanho-bola);
+    height: var(--tamanho-bola);
+    border-radius: 50%;
+    will-change: left, z-index;
+}
+
+/* Cores */
+.branca { background: var(--cor-branca); }
+.azul { background: var(--cor-azul); }
+
+/* Animação de troca de posição E sobreposição */
+.branca {
+    animation: trocaBranca var(--tempo-animacao) infinite ease-in-out;
+}
+
+.azul {
+    animation: trocaAzul var(--tempo-animacao) infinite ease-in-out;
+}
+
+@keyframes trocaBranca {
+    0%   { 
+        left: 0; 
+        z-index: 2; /* Branca fica por cima no início */
+    }
+    50%  { 
+        left: var(--distancia-troca); 
+        z-index: 1; /* Branca fica por baixo quando chega ao outro lado */
+    }
+    100% { 
+        left: 0; 
+        z-index: 2; /* Volta a ficar por cima no final */
+    }
+}
+
+@keyframes trocaAzul {
+    0%   { 
+        left: var(--distancia-troca); 
+        z-index: 1; /* Azul fica por baixo no início */
+    }
+    50%  { 
+        left: 0; 
+        z-index: 2; /* Azul fica por cima quando chega ao outro lado */
+    }
+    100% { 
+        left: var(--distancia-troca); 
+        z-index: 1; /* Volta a ficar por baixo no final */
+    }
+}

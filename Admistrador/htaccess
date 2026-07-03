@@ -1,0 +1,11 @@
+
+RewriteEngine On
+
+# remover pasta da URL
+RewriteRule ^inicio$ inicio_admin.php [L]
+RewriteRule ^login$ login.php [L]
+RewriteRule ^logout$ logout.php [L]
+RewriteRule ^dashboard$ Admistrador/dashboard.php [L]
+
+# exemplo com ID
+RewriteRule ^servico/([0-9]+)$ Admistrador/servico.php?id=$1 [L]

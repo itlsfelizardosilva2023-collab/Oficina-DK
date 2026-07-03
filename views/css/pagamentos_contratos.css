@@ -1,0 +1,846 @@
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1a2e45;
+    --navy-card: #fff;
+    --gold: #1a2e45;
+    --gold-light: #1e90ff;
+    --gold-dim: rgba(201,168,76,0.15);
+    --gold-border: rgba(201,168,76,0.3);
+    --text-primary: #1e8fff77;
+    --text-muted: #8fa3b8;
+    --green: #2ecc71;
+    --green-dim: rgba(46,204,113,0.12);
+    --red: #e74c3c;
+    --red-dim: rgba(231,76,60,0.12);
+    --yellow: #f39c12;
+    --yellow-dim: rgba(243,156,18,0.12);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.35);
+
+  }
+
+  .dark-theme-variables{ 
+    --navy: #0d1b2a;
+    --navy-mid: #1a2e45;
+    --navy-card: #202528;
+    --gold: #1a2e45;
+    --gold-light: #1e90ff;
+    --gold-dim: rgba(201,168,76,0.15);
+    --gold-border: rgba(201,168,76,0.3);
+    --text-primary: #1e8fff77;
+    --text-muted: #8fa3b8;
+    --green: #2ecc71;
+    --green-dim: rgba(46,204,113,0.12);
+    --red: #e74c3c;
+    --red-dim: rgba(231,76,60,0.12);
+    --yellow: #f39c12;
+    --yellow-dim: rgba(243,156,18,0.12);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+ 
+  /* ── HEADER ── */
+  .page-header {
+    background: var(--navy-mid);
+    border-bottom: 1px solid var(--gold-border);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+   .back-btn {
+    width: 70px; height: 30px;
+    border-radius: 10PX;
+    border: none;
+    background: #1e90ff;
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+    text-decoration: none;
+    font-size: 18px;
+    margin-top: 80px;
+
+  }
+  .page-header .back-btn:hover { background: var(--gold-dim); }
+  .page-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .page-header h1 span { color: var(--gold); }
+  .header-badge {
+    margin-left: auto;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+ 
+  /* ── MAIN LAYOUT ── */
+  .page-body { padding: 28px 32px; max-width: 1100px; margin: 0 auto; }
+ 
+  /* ── CONTRATO INFO CARD ── */
+  .contract-card {
+    background: var(--navy-card);
+    border: none;
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    box-shadow: var(--shadow) ;
+    
+  
+  }
+  .contract-card .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .contract-card .val {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .contract-card .val.big {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+  .contract-card .divider {
+    grid-column: 1 / -1;
+    height: 1px;
+    background: #1e90ff;
+  }
+  .contract-card .full { grid-column: 1 / -1; }
+ 
+  /* ── YEAR SELECTOR ── */
+  .year-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .year-bar label {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .year-bar select {
+    background: var(--navy-card);
+    border: none;
+    box-shadow: var(--shadow);
+    color: var(--text-primary);
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+  }
+  .summary-pills {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+  }
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pill.pago { background: var(--green-dim); color: var(--green); border: 1px solid rgba(46,204,113,0.25); }
+  .pill.pendente { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(243,156,18,0.25); }
+  .pill.atrasado { background: var(--red-dim); color: var(--red); border: 1px solid rgba(231,76,60,0.25); }
+ 
+  /* ── MESES TABLE ── */
+  .meses-table {
+    background: var(--navy-card);
+    border: none;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .meses-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .meses-table thead tr {
+    background: #1e90ff;
+    border-bottom: 1px solid var(--gold-border);
+  }
+  .meses-table thead th {
+    padding: 14px 20px;
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+  }
+  .meses-table tbody tr {
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    transition: background .15s;
+  }
+  .meses-table tbody tr:last-child { border-bottom: none; }
+  .meses-table tbody tr:hover { background: rgba(201,168,76,0.04); }
+  .meses-table td {
+    padding: 14px 20px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  .mes-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #1e90ff;
+    border: 1px solid var(--gold-border);
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-right: 10px;
+  }
+  .mes-nome { font-weight: 500; }
+ 
+  /* ── STATUS BADGE ── */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .status-badge.pago { background: var(--green-dim); color: var(--green); border: 1px solid rgba(46,204,113,0.25); }
+  .status-badge.pendente { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(243,156,18,0.25); }
+  .status-badge.atrasado { background: var(--red-dim); color: var(--red); border: 1px solid rgba(231,76,60,0.25); }
+  .status-badge.futuro {
+    background: rgba(143,163,184,0.1);
+    color: var(--text-muted);
+    border: 1px solid rgba(143,163,184,0.2);
+  }
+ 
+  /* ── ACOES ── */
+  .acoes { display: flex; gap: 8px; }
+  .btn-pagar {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px;
+    border-radius: var(--radius-sm);
+    border:none;
+    background: #54fa5cd0;
+    color: var(--gold-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-pagar:hover { background:#7afc80d0 ; color: var(--navy); }
+  .btn-imprimir {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(46,204,113,0.35);
+    background: var(--green-dim);
+    color: var(--green);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    text-decoration: none;
+  }
+  .btn-imprimir:hover { background: rgba(46,204,113,0.25); }
+  .btn-disabled {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(143,163,184,0.15);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: default;
+  }
+ 
+  /* ── VALOR ── */
+  .valor-mes {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+  .data-pag {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+
+ 
+  /* ──────────────────────────────────────────────
+     MODAL
+  ────────────────────────────────────────────── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: var(--navy-card);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 32px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow);
+    animation: slideUp .25s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .modal-title span { color: var(--gold); }
+  .modal-close {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: all .2s;
+  }
+  .modal-close:hover { color: var(--text-primary); border-color: var(--gold); }
+ 
+  .modal-info-strip {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .modal-info-strip .icon { color: var(#fff); font-size: 20px; }
+  .modal-info-strip .info-text .label { font-size: 11px; color: var(#fff); }
+  .modal-info-strip .info-text .val { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--gold-light); }
+ 
+  .form-group { margin-bottom: 18px; }
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--gold);
+    margin-bottom: 7px;
+  }
+  .form-control {
+    width: 100%;
+    background: var(--color-background);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    color: var(#fff);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .form-control:focus { border-color: var(--gold); }
+  .form-control::placeholder { color: var(--text-muted); }
+  textarea.form-control { resize: vertical; min-height: 90px; }
+ 
+  .modal-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .btn-cancelar {
+    flex: 1;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gold-border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-cancelar:hover { color: var(--text-primary); border-color: var(--gold); }
+  .btn-confirmar-pagar {
+    flex: 2;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: #54fa5cd0;
+    color: var(--navy);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-confirmar-pagar:hover { opacity: .9; }
+  .btn-confirmar-pagar .spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(0,0,0,0.3);
+    border-top-color: var(--navy);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+ 
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 30px; right: 30px;
+    background: var(--navy-card);
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: 14px 22px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow);
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all .35s ease;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+ 
+  /* ── PRINT STYLES ── */
+  @media print {
+    body * { visibility: hidden; }
+    #area-fatura, #area-fatura * { visibility: visible; }
+    #area-fatura {
+      position: fixed; inset: 0;
+      background: #fff;
+      color: #000;
+      padding: 30px;
+    }
+  }
+ 
+  /* ── FATURA PRINT MODAL ── */
+  #area-fatura {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 5000;
+    padding: 40px;
+    color: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    overflow-y: auto;
+  }
+  #area-fatura.visible { display: block; }
+  .fatura-header-print {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #0d1b2a;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  .fatura-empresa h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #0d1b2a;
+  }
+  .fatura-empresa p { font-size: 13px; color: #555; margin-top: 3px; }
+  .fatura-titulo {
+    text-align: right;
+  }
+  .fatura-titulo h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #c9a84c;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .fatura-titulo .num { font-size: 13px; color: #888; margin-top: 4px; }
+  .fatura-grid-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .fatura-info-box {
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .fatura-info-box .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #c9a84c; margin-bottom: 6px; }
+  .fatura-info-box p { font-size: 13px; color: #333; line-height: 1.6; }
+  .fatura-table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .fatura-table-wrap thead th {
+    background: #1e90ff;
+    color: #000;
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .fatura-table-wrap tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+  }
+  .fatura-total-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+  .fatura-total-box {
+    background: #1e90ff;
+    color: #000;
+    border-radius: 8px;
+    padding: 14px 24px;
+    text-align: right;
+    min-width: 220px;
+  }
+  .fatura-total-box .t-label { font-size: 12px; color: white; margin-bottom: 4px; }
+  .fatura-total-box .t-val { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: white; }
+  .fatura-rodape {
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .fatura-rodape .assinatura { text-align: center; }
+  .fatura-rodape .assinatura .linha { width: 180px; height: 1px; background: #333; margin: 40px auto 6px; }
+  .fatura-rodape .assinatura p { font-size: 12px; color: #555; }
+  .fatura-stamp {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 3px solid #2ecc71;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #2ecc71;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+    transform: rotate(-15deg);
+    line-height: 1.2;
+  }
+  .btn-close-fatura {
+    position: fixed;
+    top: 20px; right: 20px;
+    background: #0d1b2a;
+    color: #c9a84c;
+    border: 1px solid #c9a84c;
+    border-radius: 50%;
+    width: 42px; height: 42px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 5001;
+  }
+  .btn-print-fatura {
+    position: fixed;
+    top: 20px; right: 74px;
+    background: #c9a84c;
+    color: #0d1b2a;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 5001;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  @media (max-width: 700px) {
+    .page-body { padding: 16px; }
+    .contract-card { grid-template-columns: 1fr 1fr; }
+    .summary-pills { display: none; }
+    .meses-table td, .meses-table th { padding: 10px 12px; }
+  }
+/* ===== ÁREA DE FATURA (overlay) ===== */
+#area-fatura {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  color: #222;
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 24px 30px;
+  box-shadow: 0 0 40px rgba(0,0,0,.4);
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 13px;
+}
+
+#area-fatura.visible {
+  display: block;
+}
+
+.btn-close-fatura,
+.btn-print-fatura {
+  position: fixed;
+  top: 14px;
+  z-index: 10000;
+  border: none;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-close-fatura {
+  right: 16px;
+  background: #e74c3c;
+  color: #fff;
+}
+
+.btn-print-fatura {
+  right: 96px;
+  background: #1e90ff;
+  color: #fff;
+}
+
+.fatura-header-print {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1.5px solid #1e90ff;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.fatura-empresa h2 {
+  font-family: 'Syne', sans-serif;
+  color: #1e90ff;
+  margin: 0 0 2px;
+  font-size: 17px;
+}
+
+.fatura-empresa p {
+  margin: 1px 0;
+  font-size: 11px;
+  color: #555;
+}
+
+.fatura-titulo {
+  text-align: right;
+}
+
+.fatura-titulo h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #000;
+  font-family: 'Syne', sans-serif;
+}
+
+.fatura-titulo .num {
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.fatura-grid-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.fatura-info-box .lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: #000;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.fatura-info-box p {
+  margin: 1px 0;
+  font-size: 11.5px;
+  color: #333;
+}
+
+.fatura-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+}
+
+.fatura-table-wrap th,
+.fatura-table-wrap td {
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  font-size: 11.5px;
+  text-align: left;
+}
+
+.fatura-table-wrap th {
+  background: #1e90ff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.fatura-total-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.fatura-total-box {
+  text-align: right;
+}
+
+.fatura-total-box .t-label {
+  font-size: 10.5px;
+  color: white;
+}
+
+.fatura-total-box .t-val {
+  font-size: 18px;
+  font-weight: 800;
+  color: #000;
+  font-family: 'Syne', sans-serif;
+}
+
+.fatura-rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 36px;
+  position: relative;
+}
+
+.assinatura {
+  width: 160px;
+  text-align: center;
+}
+
+.assinatura .linha {
+  border-top: 1px solid #333;
+  margin-bottom: 4px;
+}
+
+.assinatura p {
+  font-size: 10.5px;
+  color: #555;
+}
+
+.fatura-stamp {
+  border: 2.5px solid #2ecc71;
+  color: #2ecc71;
+  font-weight: 800;
+  font-size: 16px;
+  padding: 5px 16px;
+  border-radius: 6px;
+  transform: rotate(-8deg);
+  opacity: .85;
+}
+
+/* ===== IMPRESSÃO ===== */
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  body * { visibility: hidden; }
+  #area-fatura, #area-fatura * { visibility: visible; }
+  #area-fatura {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  #area-fatura .btn-close-fatura,
+  #area-fatura .btn-print-fatura {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
