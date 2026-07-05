@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 27-Jun-2026 às 23:09
+-- Tempo de geração: 06/07/2026 às 00:42
 -- Versão do servidor: 10.4.32-MariaDB
--- versão do PHP: 8.0.30
+-- Versão do PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,38 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `capital_empresa`
+-- Estrutura para tabela `agendamentos`
+--
+
+CREATE TABLE `agendamentos` (
+  `id_agendamento` int(11) NOT NULL,
+  `nome_cliente` varchar(150) NOT NULL,
+  `placa_carro` varchar(20) NOT NULL,
+  `modelo_carro` varchar(100) NOT NULL,
+  `telefone_cliente` varchar(30) DEFAULT NULL,
+  `descricao_servico` varchar(255) NOT NULL,
+  `obs` text DEFAULT NULL,
+  `data_agendada` date NOT NULL,
+  `hora_agendada` time NOT NULL,
+  `endereco` varchar(255) NOT NULL DEFAULT 'Oficina',
+  `status_agendamento` enum('Agendado','Convertido','Cancelado') NOT NULL DEFAULT 'Agendado',
+  `id_servico_gerado` int(11) DEFAULT NULL,
+  `criado_em` datetime NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `agendamentos`
+--
+
+INSERT INTO `agendamentos` (`id_agendamento`, `nome_cliente`, `placa_carro`, `modelo_carro`, `telefone_cliente`, `descricao_servico`, `obs`, `data_agendada`, `hora_agendada`, `endereco`, `status_agendamento`, `id_servico_gerado`, `criado_em`, `criado_por`) VALUES
+(1, 'Felizardo Silva', 'LD-60-09-PP', 'Hilux', '', 'revisão', '', '2026-07-03', '11:00:00', 'Oficina', 'Convertido', 22, '2026-07-02 03:47:22', NULL),
+(2, 'joão miguel', 'LD-90-09-PN', 'pajero', '', 'revisão', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx', '2026-07-03', '01:00:00', 'Oficina', 'Convertido', NULL, '2026-07-02 23:22:13', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `capital_empresa`
 --
 
 CREATE TABLE `capital_empresa` (
@@ -38,7 +69,7 @@ CREATE TABLE `capital_empresa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `capital_empresa`
+-- Despejando dados para a tabela `capital_empresa`
 --
 
 INSERT INTO `capital_empresa` (`id_capital`, `descricao`, `id_servico`, `id_contrato`, `fluxo`, `valor`, `data_registro`) VALUES
@@ -49,12 +80,12 @@ INSERT INTO `capital_empresa` (`id_capital`, `descricao`, `id_servico`, `id_cont
 (5, 'alimentação', NULL, NULL, 'entrada', 1000.00, '2026-05-27 20:26:03'),
 (6, 'alimentação', NULL, NULL, 'saida', 1000.00, '2026-05-27 20:26:27'),
 (7, 'alimentação', NULL, NULL, 'saida', 6000.00, '2026-06-10 21:06:38'),
-(8, 'Pagamento mensal contrato #16 — Maio 2026', NULL, 16, 'entrada', 1764.71, '2026-06-15 13:26:53');
+(12, 'Pagamento mensal contrato #19 — Maio 2026', NULL, 19, 'entrada', 30000.00, '2026-07-02 10:35:34');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cargos`
+-- Estrutura para tabela `cargos`
 --
 
 CREATE TABLE `cargos` (
@@ -65,7 +96,7 @@ CREATE TABLE `cargos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `cargos`
+-- Despejando dados para a tabela `cargos`
 --
 
 INSERT INTO `cargos` (`id_cargo`, `nome_cargo`, `id_setor`, `criado_em`) VALUES
@@ -77,7 +108,7 @@ INSERT INTO `cargos` (`id_cargo`, `nome_cargo`, `id_setor`, `criado_em`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `carros`
+-- Estrutura para tabela `carros`
 --
 
 CREATE TABLE `carros` (
@@ -90,7 +121,7 @@ CREATE TABLE `carros` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `carros`
+-- Despejando dados para a tabela `carros`
 --
 
 INSERT INTO `carros` (`id_carro`, `id_modelo`, `matricula`, `cor`, `id_cliente`, `criado_em`) VALUES
@@ -103,7 +134,7 @@ INSERT INTO `carros` (`id_carro`, `id_modelo`, `matricula`, `cor`, `id_cliente`,
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `clientes`
+-- Estrutura para tabela `clientes`
 --
 
 CREATE TABLE `clientes` (
@@ -117,7 +148,7 @@ CREATE TABLE `clientes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `clientes`
+-- Despejando dados para a tabela `clientes`
 --
 
 INSERT INTO `clientes` (`id_cliente`, `nome`, `telefone`, `numero_bi`, `endereco`, `criado_em`, `email`) VALUES
@@ -136,7 +167,7 @@ INSERT INTO `clientes` (`id_cliente`, `nome`, `telefone`, `numero_bi`, `endereco
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `contratos`
+-- Estrutura para tabela `contratos`
 --
 
 CREATE TABLE `contratos` (
@@ -155,19 +186,17 @@ CREATE TABLE `contratos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `contratos`
+-- Despejando dados para a tabela `contratos`
 --
 
 INSERT INTO `contratos` (`id_contrato`, `id_cliente`, `numero_bi`, `preco_viatura`, `tipo`, `data_inicio`, `data_fim`, `total_geral`, `criado_em`, `numero_transacao`, `data`, `status`) VALUES
-(16, 6, NULL, 0.00, NULL, '2026-03-12', '2027-07-12', 30000.00, '2026-05-15 20:53:12', '7192200', '2026-05-19 00:04:38', 'pago'),
 (18, 11, NULL, 0.00, NULL, '2026-03-12', '2027-07-12', 169998.00, '2026-05-15 20:58:25', '7192201', '2026-05-19 00:04:38', 'pago'),
-(19, 31, NULL, 0.00, NULL, '2026-05-22', '2027-05-22', 30000.00, '2026-05-15 23:20:24', '8213990', '2026-05-19 00:04:38', 'pago'),
-(20, 13, NULL, 0.00, NULL, '2026-05-19', '2027-11-11', 120000.00, '2026-05-17 16:24:41', '71922011', '2026-05-19 00:04:38', 'pago');
+(19, 31, NULL, 0.00, NULL, '2026-05-22', '2027-05-22', 30000.00, '2026-05-15 23:20:24', '8213990', '2026-05-19 00:04:38', 'pago');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `contrato_carros`
+-- Estrutura para tabela `contrato_carros`
 --
 
 CREATE TABLE `contrato_carros` (
@@ -179,18 +208,17 @@ CREATE TABLE `contrato_carros` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `contrato_carros`
+-- Despejando dados para a tabela `contrato_carros`
 --
 
 INSERT INTO `contrato_carros` (`id`, `id_contrato`, `id_carro`, `criado_em`, `preco_viatura`) VALUES
 (13, 18, 30, '2026-05-15 20:58:26', 99998.00),
-(14, 19, 31, '2026-05-15 23:20:24', 30000.00),
-(16, 20, 15, '2026-05-17 16:24:41', 60000.00);
+(14, 19, 31, '2026-05-15 23:20:24', 30000.00);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `estoque`
+-- Estrutura para tabela `estoque`
 --
 
 CREATE TABLE `estoque` (
@@ -206,18 +234,17 @@ CREATE TABLE `estoque` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `estoque`
+-- Despejando dados para a tabela `estoque`
 --
 
 INSERT INTO `estoque` (`id_estoque`, `codigo`, `tipo`, `nome`, `marca`, `quantidade`, `data_registo`, `data_expiracao`, `preco`) VALUES
 (25, 'MOS01', 'Peça', 'Óleo do Motor', 'Sonangol', 2, '2026-05-21 21:48:58', '2028-08-22', 1000.00),
-(26, 'PJH03', 'Peça', 'jante', 'Hyndai', 5, '2026-06-03 21:29:08', '0000-00-00', 5000.00),
-(27, '344324', 'Peça', 'luis', 'toyota', 7, '2026-06-17 13:51:07', '3233-02-12', 2000.00);
+(26, 'PJH03', 'Peça', 'jante', 'Hyndai', 5, '2026-06-03 21:29:08', '0000-00-00', 5000.00);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `facturas`
+-- Estrutura para tabela `facturas`
 --
 
 CREATE TABLE `facturas` (
@@ -233,7 +260,7 @@ CREATE TABLE `facturas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `facturas`
+-- Despejando dados para a tabela `facturas`
 --
 
 INSERT INTO `facturas` (`id`, `id_servico`, `nome_cliente`, `placa_carro`, `modelo_carro`, `endereco`, `total`, `data_factura`, `numero_factura`) VALUES
@@ -246,14 +273,15 @@ INSERT INTO `facturas` (`id`, `id_servico`, `nome_cliente`, `placa_carro`, `mode
 (7, 8, 'Felizardo Silva', 'LD-60-09-PP', 'Hilux', 'Luanda,Benfica,Rua 13', 36024.00, '2026-06-10 22:40:40', 'FT0007'),
 (8, 8, 'Felizardo Silva', 'LD-60-09-PP', 'Hilux', 'Luanda,Benfica,Rua 13', 10800.00, '2026-06-10 22:40:40', 'FT0007'),
 (9, 17, 'Sofia Rocha', 'LD-61-19-PB', 'Hilux', 'Luanda,Benfica,Rua 13', 2280.00, '2026-06-22 04:03:51', 'FT0009'),
-(10, 9, 'Felizardo Silva', 'LD-60-09-PP', 'Hilux', 'Luanda,Benfica,Rua 13', 91181.76, '2026-06-23 03:35:14', 'FT2026/0010'),
+(10, 9, NULL, NULL, NULL, NULL, 91181.76, '2026-06-23 03:35:14', 'FT2026/0010'),
 (11, 18, 'Ana Lope', 'LD-12-54-PN', 'i10', 'Oficina', 15960.00, '2026-06-23 11:26:08', 'FT2026/0011'),
-(12, 19, 'Lorenço Borges', 'LD-61-19-PB', 'i10', 'Oficina', 13680.00, '2026-06-26 00:11:55', 'FT2026/0012');
+(12, 19, 'Lorenço Borges', 'LD-61-19-PB', 'i10', 'Oficina', 13680.00, '2026-06-26 00:11:55', 'FT2026/0012'),
+(13, 22, NULL, NULL, NULL, NULL, 0.00, '2026-07-05 08:00:56', 'FT2026/0013');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `factura_itens`
+-- Estrutura para tabela `factura_itens`
 --
 
 CREATE TABLE `factura_itens` (
@@ -267,7 +295,7 @@ CREATE TABLE `factura_itens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `factura_itens`
+-- Despejando dados para a tabela `factura_itens`
 --
 
 INSERT INTO `factura_itens` (`id`, `id_factura`, `codigo_da_peca`, `peca_materia`, `quantidade`, `preco`, `subtotal`) VALUES
@@ -279,16 +307,16 @@ INSERT INTO `factura_itens` (`id`, `id_factura`, `codigo_da_peca`, `peca_materia
 (24, 3, 'MOS01', 'Óleo', 2, 1000.00, 2000.00),
 (28, 8, '1111111', 'PECCA', 6, 1800.00, 10800.00),
 (45, 5, 'MOS01', 'Óleo', 3, 1000.00, 3000.00),
-(48, 10, '1111111', 'PECCA', 8, 9998.00, 79984.00),
 (62, 9, 'MOS01', 'Óleo do Motor', 1, 1000.00, 1000.00),
 (70, 7, '1111111', 'PECCA', 6, 1800.00, 10800.00),
 (73, 11, 'MOS01', 'Óleo do Motor', 2, 1000.00, 2000.00),
-(75, 12, 'MOS01', 'Óleo do Motor', 1, 1000.00, 1000.00);
+(75, 12, 'MOS01', 'Óleo do Motor', 1, 1000.00, 1000.00),
+(80, 10, '1111111', 'PECCA', 8, 9998.00, 79984.00);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `funcionarios`
+-- Estrutura para tabela `funcionarios`
 --
 
 CREATE TABLE `funcionarios` (
@@ -303,7 +331,7 @@ CREATE TABLE `funcionarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `funcionarios`
+-- Despejando dados para a tabela `funcionarios`
 --
 
 INSERT INTO `funcionarios` (`id_funcionario`, `nome`, `id_cargo`, `email`, `endereco`, `telefone`, `criado_em`, `status`) VALUES
@@ -318,7 +346,7 @@ INSERT INTO `funcionarios` (`id_funcionario`, `nome`, `id_cargo`, `email`, `ende
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `lembretes_enviados`
+-- Estrutura para tabela `lembretes_enviados`
 --
 
 CREATE TABLE `lembretes_enviados` (
@@ -328,7 +356,7 @@ CREATE TABLE `lembretes_enviados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Extraindo dados da tabela `lembretes_enviados`
+-- Despejando dados para a tabela `lembretes_enviados`
 --
 
 INSERT INTO `lembretes_enviados` (`id`, `id_contrato`, `data_envio`) VALUES
@@ -338,7 +366,7 @@ INSERT INTO `lembretes_enviados` (`id`, `id_contrato`, `data_envio`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `lembretes_manutencao`
+-- Estrutura para tabela `lembretes_manutencao`
 --
 
 CREATE TABLE `lembretes_manutencao` (
@@ -350,7 +378,7 @@ CREATE TABLE `lembretes_manutencao` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `marcas`
+-- Estrutura para tabela `marcas`
 --
 
 CREATE TABLE `marcas` (
@@ -359,7 +387,7 @@ CREATE TABLE `marcas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `marcas`
+-- Despejando dados para a tabela `marcas`
 --
 
 INSERT INTO `marcas` (`id_marca`, `nome`) VALUES
@@ -370,7 +398,7 @@ INSERT INTO `marcas` (`id_marca`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `modelos`
+-- Estrutura para tabela `modelos`
 --
 
 CREATE TABLE `modelos` (
@@ -380,7 +408,7 @@ CREATE TABLE `modelos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `modelos`
+-- Despejando dados para a tabela `modelos`
 --
 
 INSERT INTO `modelos` (`id_modelo`, `nome`, `id_marca`) VALUES
@@ -396,7 +424,7 @@ INSERT INTO `modelos` (`id_modelo`, `nome`, `id_marca`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `pagamentos_contrato`
+-- Estrutura para tabela `pagamentos_contrato`
 --
 
 CREATE TABLE `pagamentos_contrato` (
@@ -412,10 +440,17 @@ CREATE TABLE `pagamentos_contrato` (
   `criado_em` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `pagamentos_contrato`
+--
+
+INSERT INTO `pagamentos_contrato` (`id`, `contrato_id`, `mes`, `ano`, `num_transacao`, `observacao`, `data_pagamento`, `valor`, `status`, `criado_em`) VALUES
+(4, 19, 5, 2026, '17890028', 'express', '2026-07-02', 30000.00, 'pago', '2026-07-02 11:35:33');
+
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `recuperacao_conta`
+-- Estrutura para tabela `recuperacao_conta`
 --
 
 CREATE TABLE `recuperacao_conta` (
@@ -427,7 +462,7 @@ CREATE TABLE `recuperacao_conta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `recuperacao_conta`
+-- Despejando dados para a tabela `recuperacao_conta`
 --
 
 INSERT INTO `recuperacao_conta` (`id`, `usuario_id`, `codigo`, `expiracao`, `status`) VALUES
@@ -460,7 +495,7 @@ INSERT INTO `recuperacao_conta` (`id`, `usuario_id`, `codigo`, `expiracao`, `sta
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `servicos`
+-- Estrutura para tabela `servicos`
 --
 
 CREATE TABLE `servicos` (
@@ -482,7 +517,7 @@ CREATE TABLE `servicos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `servicos`
+-- Despejando dados para a tabela `servicos`
 --
 
 INSERT INTO `servicos` (`id`, `placa_carro`, `nome_cliente`, `modelo_carro`, `endereco`, `obs`, `total`, `data_registo`, `id_mecanico`, `data`, `status`, `id_cliente`, `deslocacao`, `cobranca`, `descricao_servico`) VALUES
@@ -490,12 +525,14 @@ INSERT INTO `servicos` (`id`, `placa_carro`, `nome_cliente`, `modelo_carro`, `en
 (12, 'LD-60-09-PP', 'Felizardo Silva', 'Hilux', 'Luanda,Benfica,Rua 13', 'XXXXXXXXXX', 3000.00, '2026-05-21 21:51:21', 25, '2026-05-21 22:51:21', 'concluido', NULL, 0.00, NULL, ''),
 (17, 'LD-61-19-PB', 'Sofia Rocha', 'Hilux', 'Luanda,Benfica,Rua 13', 'XXXXXXXXXXXXXXXXXX', 7000.00, '2026-06-22 03:03:29', 21, '2026-06-22 04:03:29', 'concluido', NULL, 0.00, 6000.00, ''),
 (18, 'LD-12-54-PN', 'Ana Lope', 'i10', 'Oficina', '', 12000.00, '2026-06-23 10:25:50', 21, '2026-06-23 11:25:50', 'concluido', NULL, 0.00, 10000.00, 'revisão'),
-(19, 'LD-61-19-PB', 'Lorenço Borges', 'i10', 'Oficina', '', 11000.00, '2026-06-23 21:20:29', 23, '2026-06-23 22:20:29', 'pendente', NULL, 0.00, 10000.00, 'revisão');
+(19, 'LD-61-19-PB', 'Lorenço Borges', 'i10', 'Oficina', '', 11000.00, '2026-06-23 21:20:29', 23, '2026-06-23 22:20:29', 'pendente', NULL, 0.00, 10000.00, 'revisão'),
+(20, 'LD-90-09-PN', 'joão miguel', 'pajero', 'Oficina', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', 15000.00, '2026-07-02 10:44:08', 27, '2026-07-02 11:44:08', 'pendente', 32, 0.00, 15000.00, 'Troca de Óleo e Filtro'),
+(22, 'LD-60-09-PP', 'Felizardo Silva', 'Hilux', 'Oficina', '', 0.00, '2026-07-03 12:43:40', NULL, '2026-07-03 13:43:40', 'pendente', NULL, 0.00, 0.00, 'revisão');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `servico_itens`
+-- Estrutura para tabela `servico_itens`
 --
 
 CREATE TABLE `servico_itens` (
@@ -508,7 +545,7 @@ CREATE TABLE `servico_itens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `servico_itens`
+-- Despejando dados para a tabela `servico_itens`
 --
 
 INSERT INTO `servico_itens` (`id`, `id_servico`, `codigo_da_peca`, `peca_materia`, `quantidade`, `preco`) VALUES
@@ -521,7 +558,7 @@ INSERT INTO `servico_itens` (`id`, `id_servico`, `codigo_da_peca`, `peca_materia
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `setores`
+-- Estrutura para tabela `setores`
 --
 
 CREATE TABLE `setores` (
@@ -531,7 +568,7 @@ CREATE TABLE `setores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `setores`
+-- Despejando dados para a tabela `setores`
 --
 
 INSERT INTO `setores` (`id_setor`, `nome_setor`, `criado_em`) VALUES
@@ -541,7 +578,7 @@ INSERT INTO `setores` (`id_setor`, `nome_setor`, `criado_em`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `usuarios`
+-- Estrutura para tabela `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -558,19 +595,19 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `usuarios`
+-- Despejando dados para a tabela `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `id_funcionario`, `nome`, `email`, `senha`, `nivel`, `criado_em`, `is_master_admin`, `status`, `ativo`) VALUES
 (54, 22, 'Default Admin', 'DefaultAdmin@gmail.com', '$2y$10$fMUChTd2qRAlypETBZKFx.lFMAMFulXR96B/ufVGEm9YJWh2bb5P2', 'admin', '2026-04-07 15:07:46', 6, 'ativo', 1),
 (55, 23, 'Paulo mama', 'paulosilva2023@gmail.com', '$2y$10$.pAqKtwF/P8TjKTtoGEpRuIdGUVs9dDLCX8L3TKv6xNeVAeuR5wA2', 'tecnico', '2026-04-09 11:57:01', 0, 'ativo', 1),
-(57, 21, 'Felizardo  silva', 'itlsilv2023@gmail.com', '$2y$10$VymAhEqPJGGPRcOy8NNZF.97vLTX391tgn7MAfJK15fWGQBEqnH6e', 'usuario', '2026-04-23 10:56:59', 0, 'ativo', 1),
+(57, 21, 'Felizardo  silva', 'itlsilv2023@gmail.com', '$2y$10$VymAhEqPJGGPRcOy8NNZF.97vLTX391tgn7MAfJK15fWGQBEqnH6e', 'tecnico', '2026-04-23 10:56:59', 0, 'ativo', 1),
 (58, 27, 'Virgilio Antonio', 'VirgilioAntonio@gmail.com', '$2y$10$pKC2bKoqHnhaZF2VNi2wrePdkZZCODyOGh2ykTbOGNwpuzkFkxDGW', 'usuario', '2026-05-05 12:17:32', 0, 'ativo', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `usuario_permissoes`
+-- Estrutura para tabela `usuario_permissoes`
 --
 
 CREATE TABLE `usuario_permissoes` (
@@ -580,20 +617,31 @@ CREATE TABLE `usuario_permissoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `usuario_permissoes`
+-- Despejando dados para a tabela `usuario_permissoes`
 --
 
 INSERT INTO `usuario_permissoes` (`id_permissao`, `id_usuario`, `pagina`) VALUES
-(30, 57, 'clientes.php'),
-(29, 57, 'inicio_admin.php'),
-(31, 57, 'stok.php');
+(44, 57, 'clientes.php'),
+(43, 57, 'inicio_admin.php'),
+(47, 58, 'carros.php'),
+(46, 58, 'clientes.php'),
+(45, 58, 'inicio_admin.php'),
+(48, 58, 'servicos.php');
 
 --
 -- Índices para tabelas despejadas
 --
 
 --
--- Índices para tabela `capital_empresa`
+-- Índices de tabela `agendamentos`
+--
+ALTER TABLE `agendamentos`
+  ADD PRIMARY KEY (`id_agendamento`),
+  ADD KEY `fk_agendamento_servico` (`id_servico_gerado`),
+  ADD KEY `idx_data_status` (`data_agendada`,`status_agendamento`);
+
+--
+-- Índices de tabela `capital_empresa`
 --
 ALTER TABLE `capital_empresa`
   ADD PRIMARY KEY (`id_capital`),
@@ -601,7 +649,7 @@ ALTER TABLE `capital_empresa`
   ADD KEY `fk_contratos` (`id_contrato`);
 
 --
--- Índices para tabela `cargos`
+-- Índices de tabela `cargos`
 --
 ALTER TABLE `cargos`
   ADD PRIMARY KEY (`id_cargo`),
@@ -609,7 +657,7 @@ ALTER TABLE `cargos`
   ADD KEY `id_setor` (`id_setor`);
 
 --
--- Índices para tabela `carros`
+-- Índices de tabela `carros`
 --
 ALTER TABLE `carros`
   ADD PRIMARY KEY (`id_carro`),
@@ -618,13 +666,13 @@ ALTER TABLE `carros`
   ADD KEY `fk_carros_modelo` (`id_modelo`);
 
 --
--- Índices para tabela `clientes`
+-- Índices de tabela `clientes`
 --
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id_cliente`);
 
 --
--- Índices para tabela `contratos`
+-- Índices de tabela `contratos`
 --
 ALTER TABLE `contratos`
   ADD PRIMARY KEY (`id_contrato`),
@@ -632,7 +680,7 @@ ALTER TABLE `contratos`
   ADD KEY `fk_cliente` (`id_cliente`);
 
 --
--- Índices para tabela `contrato_carros`
+-- Índices de tabela `contrato_carros`
 --
 ALTER TABLE `contrato_carros`
   ADD PRIMARY KEY (`id`),
@@ -640,92 +688,92 @@ ALTER TABLE `contrato_carros`
   ADD KEY `contrato_carros_ibfk_1` (`id_contrato`);
 
 --
--- Índices para tabela `estoque`
+-- Índices de tabela `estoque`
 --
 ALTER TABLE `estoque`
   ADD PRIMARY KEY (`id_estoque`),
   ADD UNIQUE KEY `codigo` (`codigo`);
 
 --
--- Índices para tabela `facturas`
+-- Índices de tabela `facturas`
 --
 ALTER TABLE `facturas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `factura_itens`
+-- Índices de tabela `factura_itens`
 --
 ALTER TABLE `factura_itens`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `funcionarios`
+-- Índices de tabela `funcionarios`
 --
 ALTER TABLE `funcionarios`
   ADD PRIMARY KEY (`id_funcionario`),
   ADD KEY `fk_funcionario_cargo` (`id_cargo`);
 
 --
--- Índices para tabela `lembretes_enviados`
+-- Índices de tabela `lembretes_enviados`
 --
 ALTER TABLE `lembretes_enviados`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `lembretes_manutencao`
+-- Índices de tabela `lembretes_manutencao`
 --
 ALTER TABLE `lembretes_manutencao`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `marcas`
+-- Índices de tabela `marcas`
 --
 ALTER TABLE `marcas`
   ADD PRIMARY KEY (`id_marca`),
   ADD UNIQUE KEY `nome` (`nome`);
 
 --
--- Índices para tabela `modelos`
+-- Índices de tabela `modelos`
 --
 ALTER TABLE `modelos`
   ADD PRIMARY KEY (`id_modelo`),
   ADD KEY `fk_modelos_marca` (`id_marca`);
 
 --
--- Índices para tabela `pagamentos_contrato`
+-- Índices de tabela `pagamentos_contrato`
 --
 ALTER TABLE `pagamentos_contrato`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uk_contrato_mes_ano` (`contrato_id`,`mes`,`ano`);
 
 --
--- Índices para tabela `recuperacao_conta`
+-- Índices de tabela `recuperacao_conta`
 --
 ALTER TABLE `recuperacao_conta`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `servicos`
+-- Índices de tabela `servicos`
 --
 ALTER TABLE `servicos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `servico_itens`
+-- Índices de tabela `servico_itens`
 --
 ALTER TABLE `servico_itens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_servico` (`id_servico`);
 
 --
--- Índices para tabela `setores`
+-- Índices de tabela `setores`
 --
 ALTER TABLE `setores`
   ADD PRIMARY KEY (`id_setor`),
   ADD UNIQUE KEY `nome_setor` (`nome_setor`);
 
 --
--- Índices para tabela `usuarios`
+-- Índices de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
@@ -733,21 +781,27 @@ ALTER TABLE `usuarios`
   ADD KEY `fk_funcionario` (`id_funcionario`);
 
 --
--- Índices para tabela `usuario_permissoes`
+-- Índices de tabela `usuario_permissoes`
 --
 ALTER TABLE `usuario_permissoes`
   ADD PRIMARY KEY (`id_permissao`),
   ADD UNIQUE KEY `uq_usuario_pagina` (`id_usuario`,`pagina`);
 
 --
--- AUTO_INCREMENT de tabelas despejadas
+-- AUTO_INCREMENT para tabelas despejadas
 --
+
+--
+-- AUTO_INCREMENT de tabela `agendamentos`
+--
+ALTER TABLE `agendamentos`
+  MODIFY `id_agendamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `capital_empresa`
 --
 ALTER TABLE `capital_empresa`
-  MODIFY `id_capital` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_capital` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de tabela `cargos`
@@ -783,19 +837,19 @@ ALTER TABLE `contrato_carros`
 -- AUTO_INCREMENT de tabela `estoque`
 --
 ALTER TABLE `estoque`
-  MODIFY `id_estoque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_estoque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de tabela `facturas`
 --
 ALTER TABLE `facturas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de tabela `factura_itens`
 --
 ALTER TABLE `factura_itens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT de tabela `funcionarios`
@@ -831,7 +885,7 @@ ALTER TABLE `modelos`
 -- AUTO_INCREMENT de tabela `pagamentos_contrato`
 --
 ALTER TABLE `pagamentos_contrato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `recuperacao_conta`
@@ -843,7 +897,7 @@ ALTER TABLE `recuperacao_conta`
 -- AUTO_INCREMENT de tabela `servicos`
 --
 ALTER TABLE `servicos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de tabela `servico_itens`
@@ -867,27 +921,33 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `usuario_permissoes`
 --
 ALTER TABLE `usuario_permissoes`
-  MODIFY `id_permissao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_permissao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
--- Restrições para despejos de tabelas
+-- Restrições para tabelas despejadas
 --
 
 --
--- Limitadores para a tabela `capital_empresa`
+-- Restrições para tabelas `agendamentos`
+--
+ALTER TABLE `agendamentos`
+  ADD CONSTRAINT `fk_agendamento_servico` FOREIGN KEY (`id_servico_gerado`) REFERENCES `servicos` (`id`) ON DELETE SET NULL;
+
+--
+-- Restrições para tabelas `capital_empresa`
 --
 ALTER TABLE `capital_empresa`
   ADD CONSTRAINT `fk_contratos` FOREIGN KEY (`id_contrato`) REFERENCES `contratos` (`id_contrato`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_servicos` FOREIGN KEY (`id_servico`) REFERENCES `servicos` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Limitadores para a tabela `cargos`
+-- Restrições para tabelas `cargos`
 --
 ALTER TABLE `cargos`
   ADD CONSTRAINT `cargos_ibfk_1` FOREIGN KEY (`id_setor`) REFERENCES `setores` (`id_setor`) ON DELETE CASCADE;
 
 --
--- Limitadores para a tabela `carros`
+-- Restrições para tabelas `carros`
 --
 ALTER TABLE `carros`
   ADD CONSTRAINT `carros_ibfk_1` FOREIGN KEY (`id_modelo`) REFERENCES `modelos` (`id_modelo`),
@@ -895,51 +955,51 @@ ALTER TABLE `carros`
   ADD CONSTRAINT `fk_carros_modelo` FOREIGN KEY (`id_modelo`) REFERENCES `modelos` (`id_modelo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limitadores para a tabela `contratos`
+-- Restrições para tabelas `contratos`
 --
 ALTER TABLE `contratos`
   ADD CONSTRAINT `fk_contrato_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limitadores para a tabela `contrato_carros`
+-- Restrições para tabelas `contrato_carros`
 --
 ALTER TABLE `contrato_carros`
   ADD CONSTRAINT `contrato_carros_ibfk_1` FOREIGN KEY (`id_contrato`) REFERENCES `contratos` (`id_contrato`) ON DELETE CASCADE,
   ADD CONSTRAINT `contrato_carros_ibfk_2` FOREIGN KEY (`id_carro`) REFERENCES `carros` (`id_carro`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limitadores para a tabela `funcionarios`
+-- Restrições para tabelas `funcionarios`
 --
 ALTER TABLE `funcionarios`
   ADD CONSTRAINT `fk_funcionario_cargo` FOREIGN KEY (`id_cargo`) REFERENCES `cargos` (`id_cargo`);
 
 --
--- Limitadores para a tabela `modelos`
+-- Restrições para tabelas `modelos`
 --
 ALTER TABLE `modelos`
   ADD CONSTRAINT `fk_modelos_marca` FOREIGN KEY (`id_marca`) REFERENCES `marcas` (`id_marca`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `modelos_ibfk_1` FOREIGN KEY (`id_marca`) REFERENCES `marcas` (`id_marca`) ON DELETE CASCADE;
 
 --
--- Limitadores para a tabela `pagamentos_contrato`
+-- Restrições para tabelas `pagamentos_contrato`
 --
 ALTER TABLE `pagamentos_contrato`
   ADD CONSTRAINT `fk_pag_contrato` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`id_contrato`) ON DELETE CASCADE;
 
 --
--- Limitadores para a tabela `servico_itens`
+-- Restrições para tabelas `servico_itens`
 --
 ALTER TABLE `servico_itens`
   ADD CONSTRAINT `servico_itens_ibfk_1` FOREIGN KEY (`id_servico`) REFERENCES `servicos` (`id`) ON DELETE CASCADE;
 
 --
--- Limitadores para a tabela `usuarios`
+-- Restrições para tabelas `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `fk_funcionario` FOREIGN KEY (`id_funcionario`) REFERENCES `funcionarios` (`id_funcionario`) ON UPDATE CASCADE;
 
 --
--- Limitadores para a tabela `usuario_permissoes`
+-- Restrições para tabelas `usuario_permissoes`
 --
 ALTER TABLE `usuario_permissoes`
   ADD CONSTRAINT `usuario_permissoes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
