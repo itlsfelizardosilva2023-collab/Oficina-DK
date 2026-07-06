@@ -54,17 +54,26 @@
     </small>
 </div>
 
-<div class="sales" onclick="window.location.href='agendamentos.php';" style="cursor: pointer;">
+
+<?php
+$stmtConcluidos = $conn->prepare("SELECT COUNT(*) AS total FROM servicos WHERE status = 'concluido'");
+$stmtConcluidos->execute();
+$totalConcluidos = $stmtConcluidos->get_result()->fetch_assoc()['total'];
+?>
+
+<div class="sales">
     <span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-calendar-check-fill" viewBox="0 0 16 16">
-  <path d="M4 .5a.5.5 0 0 1 .5.5V2h7V1a.5.5 0 0 1 1 0V2h1A1.5 1.5 0 0 1 15 3.5v10A1.5 1.5 0 0 1 13.5 15h-11A1.5 1.5 0 0 1 1 13.5v-10A1.5 1.5 0 0 1 2.5 2h1V1A.5.5 0 0 1 4 .5M2 5v8.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V5z"/>
-  <path d="M10.854 7.146a.5.5 0 0 1 0 .708L8.5 10.207 7.146 8.854a.5.5 0 1 1 .708-.708L8.5 8.793l1.646-1.647a.5.5 0 0 1 .708 0"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L6.5 8.293l2.646-2.647a.5.5 0 0 1 .708.708"/>
 </svg>
     </span>
     <div class="midlle">
-        <h3>AGENDAMENTOS</h3>
+        <h3>Concluídos</h3>
+        <h1><?= (int) $totalConcluidos ?></h1>
     </div>
-</div> 
+</div>
+
+
 
 <div class="sales" onclick="window.location.href='servicos.php?status=andamento';" style="cursor: pointer;">
     <span>
@@ -118,6 +127,13 @@
                     </a>
                 </div>
 
+                  <div class="btn-rpc" >
+                    <a href="agendamentos.php">
+                        <button class="btn-add">
+                           <h3>Agendamento</h3> 
+                        </button>
+                    </a>
+                </div>
                    
 
 

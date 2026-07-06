@@ -1,53 +1,66 @@
 
-
 <?php
 session_start();
 
-include_once("./models/stok_models.php");
 include("./configuracao/conexao.php");
 include_once("./funcoes/funcao_atualizar.php");
-
-
-
-
-
-include_once("./funcoes/funcao_atualizar.php");
-require_once("./configuracao/conexao.php");
-
+include_once("./models/stok_models.php");
 
 ####################### atualizar #########################
-
-include_once("./funcoes/funcao_atualizar.php");
-require_once("./configuracao/conexao.php");
-
-// pega o id da URL (necessário para o GET inicial, quando a página carrega)
 $id = (int) ($_GET['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $id = (int) ($_POST['id_estoque'] ?? $id);
 
-    $dados = [
-        'tipo'           => $_POST['tipo'] ?? '',
-        'nome'           => $_POST['nome'] ?? '',
-        'quantidade'     => (int) ($_POST['quantidade'] ?? 0),
-        'marca'          => $_POST['marca'] ?? '',
-        'preco'          => (float) ($_POST['preco'] ?? 0),
-        'codigo'         => $_POST['codigo'] ?? '',
-        'data_expiracao' => $_POST['data_expiracao'] ?? null,
-    ];
+    $tipo = $_POST['tipo'] ?? '';
+    $nome = $_POST['nome'] ?? '';
+    $quantidade = (int) ($_POST['quantidade'] ?? 0);
+    $marca = $_POST['marca'] ?? '';
+    $preco = (float) ($_POST['preco'] ?? 0);
+    $codigo = $_POST['codigo'] ?? '';
+    $data_expiracao = !empty($_POST['data_expiracao']) ? $_POST['data_expiracao'] : null;
 
-    $resultado = atualizarRegistro($conn, 'estoque', $dados, $id, 'id_estoque');
+    $sql = "UPDATE estoque SET 
+                tipo = ?, 
+                nome = ?, 
+                quantidade = ?, 
+                marca = ?, 
+                preco = ?, 
+                codigo = ?, 
+                data_expiracao = ? 
+            WHERE id_estoque = ?";
 
-    if ($resultado === true) {
-        header("Location: stok.php?id=$id&msg=atualizado");
-        exit();
+    $stmtUpdate = $conn->prepare($sql);
+
+    if ($stmtUpdate === false) {
+        $erro = "Erro ao preparar a query: " . $conn->error;
     } else {
-        echo "Erro ao actualizar: " . $resultado;
+        $stmtUpdate->bind_param(
+            "ssisdssi",
+            $tipo,
+            $nome,
+            $quantidade,
+            $marca,
+            $preco,
+            $codigo,
+            $data_expiracao,
+            $id
+        );
+
+        if ($stmtUpdate->execute()) {
+            header("Location: atualizar_stok.php");
+            exit();
+        } else {
+            // erro 1062 = entrada duplicada (código já existe noutro produto)
+            if ($conn->errno === 1062) {
+                $erro = "Já existe outro produto com esse código.";
+            } else {
+                $erro = "Erro ao actualizar: " . $stmtUpdate->error;
+            }
+        }
     }
 }
 
-// Query 1: produto único, usado para preencher o FORMULÁRIO de edição
 $stmt = $conn->prepare("SELECT * FROM estoque WHERE id_estoque = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
@@ -57,7 +70,6 @@ if (!$produto) {
     die("Produto não encontrado");
 }
 
-// Query 2: todos os produtos, usado para a LISTAGEM lateral
 $stmtLista = $conn->prepare("SELECT * FROM estoque ORDER BY nome ASC");
 $stmtLista->execute();
 $result = $stmtLista->get_result();
@@ -93,14 +105,7 @@ $result = $stmtLista->get_result();
                             <path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.6.6 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0z"/>
                             </svg>
                      </span>
-                              <!------------gráfico----------------------->
-                             <div class="progress-circle small">
-                            <svg width="60" height="60">
-                                <circle cx="30" cy="30" r="24" class="bg"></circle>
-                                <circle cx="30" cy="30" r="24" class="progress" id="progress-carros"></circle>
-                            </svg>
-                            <div class="number" id="percent-carros">0%</div>
-                        </div>
+                             
                         <div class="midlle">
                             
                                  <h3>Peças e Materias</h3>
@@ -119,14 +124,7 @@ $result = $stmtLista->get_result();
                             <path d="M2.5 0A1.5 1.5 0 0 0 1 1.5V3H.5a.5.5 0 0 0 0 1H1v3.5H.5a.5.5 0 0 0 0 1H1V12H.5a.5.5 0 0 0 0 1H1v1.5A1.5 1.5 0 0 0 2.5 16h12a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 14.5 0zm3.036 4.464 1.09 1.09a3 3 0 0 1 3.476 0l1.09-1.09a.5.5 0 1 1 .707.708l-1.09 1.09c.74 1.037.74 2.44 0 3.476l1.09 1.09a.5.5 0 1 1-.707.708l-1.09-1.09a3 3 0 0 1-3.476 0l-1.09 1.09a.5.5 0 1 1-.708-.708l1.09-1.09a3 3 0 0 1 0-3.476l-1.09-1.09a.5.5 0 1 1 .708-.708M14 6.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 1 0"/>
                         </svg>
                                                     </span>
-                             <!------------gráfico----------------------->
-                             <div class="progress-circle small">
-                            <svg width="60" height="60">
-                                <circle cx="30" cy="30" r="24" class="bg"></circle>
-                                <circle cx="30" cy="30" r="24" class="progress" id="progress-carros"></circle>
-                            </svg>
-                            <div class="number" id="percent-carros">0%</div>
-                        </div>
+                            
 
                         <div class="midlle">
                             
@@ -308,7 +306,7 @@ $result = $stmtLista->get_result();
 
 
 
-<form method="POST">
+<form method="POST" action="atualizar_stok.php?id=<?= $produto['id_estoque'] ?>">
 
     <input type="hidden" name="id_estoque" value="<?= $produto['id_estoque'] ?>">
 

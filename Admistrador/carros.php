@@ -42,7 +42,7 @@ session_start();
                                     $totalCarros = $dados['total_carros_30_dias'];
                                     ?>
 
-                                    <h1><?= $totalCarros ?>carros</h1>
+                                    <h1><?= $totalCarros ?></h1>
                             
                             
                         </div>
@@ -70,7 +70,7 @@ session_start();
                         $total_com_contrato = $res_com_contrato->fetch_assoc()['total'] ?? 0;
                         ?>
 
-                        <h1><?= $total_com_contrato ?> carros</h1>
+                        <h1><?= $total_com_contrato ?> </h1>
                                                     
                         </div>
                         
@@ -97,7 +97,7 @@ session_start();
                                     $total_sem_servico = $res_sem_servico->fetch_assoc()['total'] ?? 0;
                                     ?>
 
-                                    <h1><?= $total_sem_servico ?>carros</h1>
+                                    <h1><?= $total_sem_servico ?></h1>
                           
                         </div>
                     </div> 
