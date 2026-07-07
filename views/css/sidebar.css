@@ -169,6 +169,7 @@ b{
 
 aside{
     height: 100vh;
+  
    
 }
 
@@ -283,11 +284,7 @@ aside .sidebar{
     background: var(--color-background);
    }
 
-   aside .sidebar a:last-child{
-    position: relative;
-    margin-top: 1.8rem;
-   }
-
+   
    main .insights{
     grid-template-columns: 1fr;
     gap: 0;
@@ -327,7 +324,7 @@ aside .sidebar{
         background:var(--color-white);
         width: 18rem;
         box-shadow: 1rem 3rem 4rem  var(--color-light);
-        height: 100vh;
+        height: 100%;
         padding-right: var(--card-padding);
         display: none;
         z-index: 2;
@@ -358,11 +355,7 @@ to{
        height: 3.4rem;
     }
     
-    aside .sidebar a:last-child{
-     position: absolute;
-     bottom: 5rem;
-      
-    }
+    
 
       aside .close{
      
@@ -424,7 +417,7 @@ main .Recent-Order table{
 
 .right .top .theme-toggler{
 
-    margin-left: 360px;
+    margin-left: 250px;
     width: 3.3rem;
     left: 66%;
 

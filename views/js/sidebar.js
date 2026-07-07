@@ -60,3 +60,4 @@ window.addEventListener("load", () => {
         loading.classList.add("hidden");
     }, 1000);
 });
+

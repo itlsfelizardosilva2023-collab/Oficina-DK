@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once "./configuracao/conexao.php";
 require_once "./funcoes/funcao_atualizar.php";
 

@@ -226,12 +226,12 @@ aside .sidebar{
     display: flex;
     flex-direction: column;
     height: 78vh;
-    position: fixed;
+    position: sticky;
     top: 3rem;
     margin-top: 80px;
-    width: 200px;
+    width: 100%;
+    max-width: 200px;
 }
-
 aside h3{
     font-weight: 500;
 }
@@ -273,7 +273,11 @@ color: var(--color-primary-variant) ;
 /*-------------main----------------*/
 main{
     margin-top: 2rem;
-    margin-left: 10px;
+    width: 100%;
+    
+    
+
+    
 }
 
 
@@ -516,10 +520,7 @@ aside .sidebar{
     background: var(--color-background);
    }
 
-   aside .sidebar a:last-child{
-    position: relative;
-    margin-top: 1.8rem;
-   }
+   
 
    main .insights{
     grid-template-columns: 1fr;
@@ -560,7 +561,7 @@ aside .sidebar{
         background:var(--color-white);
         width: 18rem;
         box-shadow: 1rem 3rem 4rem  var(--color-light);
-        height: 100vh;
+        height: 100%;
         padding-right: var(--card-padding);
         display: none;
         z-index: 2;
@@ -591,11 +592,7 @@ to{
        height: 3.4rem;
     }
     
-    aside .sidebar a:last-child{
-     position: absolute;
-     bottom: 5rem;
-      
-    }
+    
 
       aside .close{
      
@@ -624,9 +621,11 @@ main .Recent-Order{
   text-align: center;
 }
 
-main .Recent-Order table{
+main .Recent-Order table td{
     width: 560px;
     margin-left:-90px;
+    font-size: 9px;
+
 }
 .right{
      width: 93%;
@@ -840,18 +839,16 @@ main .Recent-Order table{
  
 
     /* Noise texture overlay */
-
-    .chat-wrapper {
-      position: relative;
-      z-index: 7;
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      background: rgba(134, 177, 255, 0.1); 
-     
-    }
+.chat-wrapper {
+  position: relative;
+  z-index: 7;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: rgba(134, 177, 255, 0.1);
+}
  
     /* Header */
     .chat-header {

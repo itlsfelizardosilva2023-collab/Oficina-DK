@@ -722,7 +722,62 @@ main .Recent-Order table{
 }
 
 
+/* Tabela */
+.modern-table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    font-family: Arial, sans-serif;
+}
 
+/* CABEÇALHO */
+.modern-table thead th{
+    text-align: left;
+    padding: 9px;
+    font-size: 9px;
+    color: #bbc2cf;
+}
+
+/* LINHAS */
+.modern-table tbody tr{
+    background: var(--color-white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.modern-table tbody tr:hover{
+    transform: scale(1.01);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* CELULAS */
+.modern-table td{
+    padding: 7px;
+    font-size: 8px;
+    color: var(--color-dark);
+}
+
+/* BADGE CONTRATO */
+.badge{
+    background: #e0f2fe;
+    color: #0284c7;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* PREÇO */
+.price{
+    font-weight: bold;
+    color: #16a34a;
+}
+
+/* BOTÕES */
+.actions{
+    display: flex;
+    gap: 8px;
+}
 
 
 

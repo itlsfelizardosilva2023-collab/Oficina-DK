@@ -748,6 +748,120 @@ main .Recent-Order table{
 
 
 
+.servicos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.servico-card {
+    background: var(--color-white) ;
+    border: none;
+    border-radius: 12px;
+    padding: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.servico-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(13, 110, 253, 0.15);
+    border-color: #0d6efd;
+}
+
+.servico-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d6efd, #00c2ff);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 7px;
+    flex-shrink: 0;
+}
+
+.servico-info h4 {
+    margin: 0;
+    color: var(--color-dark);
+    font-size: 16px;
+}
+
+.servico-info .placa {
+    color: #8a8f98;
+    font-size: 7px;
+}
+
+.servico-detalhes p {
+    margin: 4px 0;
+    color: #c5c8ce;
+    font-size: 13.5px;
+}
+
+.servico-detalhes strong {
+    color: #9aa0aa;
+}
+
+.servico-acoes {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    border-top: 1px solid #2a2d36;
+    padding-top: 12px;
+}
+.data-servico {
+    font-size: 0.78rem;
+    color: #888;
+}
+.btn-acao {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 0;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.btn-acao:hover {
+    opacity: 0.8;
+}
+
+.btn-editar {
+    background: rgba(13, 110, 253, 0.15);
+    color: #4d9bff;
+}
+
+.btn-factura {
+    background: rgba(25, 135, 84, 0.15);
+    color: #4ddb8a;
+}
+
+.btn-deletar {
+    background: rgba(220, 53, 69, 0.15);
+    color: #ff6b7a;
+    flex: 0 0 38px;
+}
+
+.sem-resultado {
+    color: #8a8f98;
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 30px 0;
+}
 
 
 }
