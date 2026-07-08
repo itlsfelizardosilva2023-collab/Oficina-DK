@@ -191,6 +191,8 @@ session_start();
                     </svg> 
                     </a>
 
+
+                  <a class='btn view' href='historico_veiculo.php?id=<?= $row["id_carro"] ?>'> Histórico </a>
                     
                   <?php if ($_SESSION['nivel'] === "admin") { ?>
                                 <!-- ELIMINAR -->

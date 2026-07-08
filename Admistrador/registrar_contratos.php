@@ -1,4 +1,3 @@
-
 <?php
 session_start();
   include_once("./models/servico_model.php");
@@ -87,12 +86,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $bi = trim($_POST['numero_bi'] ?? '');
         $data_inicio = trim($_POST['data_inicio'] ?? '');
         $data_fim = trim($_POST['data_fim'] ?? '');
-        $numero_transacao = trim($_POST['numero_transacao'] ?? '');
+      
 
         if ($bi === "") throw new Exception("Número de BI do cliente é obrigatório");
         if ($data_inicio === "") throw new Exception("Data de início é obrigatória");
         if ($data_fim === "") throw new Exception("Data de fim é obrigatória");
-        if ($numero_transacao === "") throw new Exception("Número de transação é obrigatório");
+       
 
         // ===== DATAS =====
         $d1 = DateTime::createFromFormat('Y-m-d', $data_inicio);
@@ -172,6 +171,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!$stmt->execute()) throw new Exception("Erro ao criar contrato: " . $stmt->error);
 
         $id_contrato = $conn->insert_id;
+
+        // ===== GERAR E GRAVAR CÓDIGO DO CONTRATO =====
+        // Formato: CT2026/0001 — segue o mesmo padrão usado nas facturas (FT2026/0011)
+        // Gerado a partir do id_contrato (AUTO_INCREMENT), garantindo que nunca colide
+        // mesmo com dois contratos a serem criados ao mesmo tempo.
+        $numero_contrato = "CT" . date('Y') . "/" . str_pad($id_contrato, 4, '0', STR_PAD_LEFT);
+
+        $sqlCodigo = "UPDATE contratos SET numero_contrato = ? WHERE id_contrato = ?";
+        $stmtCodigo = $conn->prepare($sqlCodigo);
+        if (!$stmtCodigo) throw new Exception("Erro ao preparar gravação do código do contrato: " . $conn->error);
+
+        $stmtCodigo->bind_param("si", $numero_contrato, $id_contrato);
+
+        if (!$stmtCodigo->execute()) throw new Exception("Erro ao gravar código do contrato: " . $stmtCodigo->error);
 
         // ===== INSERIR CARROS =====
         $placas = $_POST['placa'];
@@ -315,8 +328,6 @@ $precos_antigos  = $_POST['preco_viatura'] ?? [''];
 
 </div>
 
-<input type="text" name="numero_transacao" placeholder="Nº Transação"
-       value="<?= htmlspecialchars($_POST['numero_transacao'] ?? '') ?>">
 
 <!-- TOTAL -->
 <div class="totalBox">

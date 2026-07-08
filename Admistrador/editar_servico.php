@@ -67,7 +67,7 @@ $e_servico_customizado = !empty($descricao_atual) && !array_key_exists($descrica
 <body>
     
 <div class="container">
-    <?php include_once('sidebar.php');?>
+   
              
     <div class="containerc">
 

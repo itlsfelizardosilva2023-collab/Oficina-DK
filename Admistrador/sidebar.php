@@ -43,9 +43,7 @@ if (!isset($_SESSION['nivel']) || !in_array($_SESSION['nivel'], ['admin', 'usuar
                     </span>
                 </div>
             </div>
-        <div id="loading">
-            <div class="container" id="container"></div>
-        </div>
+      
             <nav class="nav-container">
                 <div class="sidebar ul">
                     <?php if (temAcessoPagina('inicio_admin.php')): ?>

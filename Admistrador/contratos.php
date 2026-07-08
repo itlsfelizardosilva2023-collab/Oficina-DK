@@ -16,7 +16,7 @@ if(isset($_GET['pesquisa']) && !empty($_GET['pesquisa'])){
     SELECT 
         contratos.id_contrato,
         contratos.numero_transacao,
-        contratos.status,
+        pagamentos_contrato.status AS status_mes,
         contratos.data_fim,
         contratos.total_geral,
         clientes.nome
@@ -28,7 +28,7 @@ if(isset($_GET['pesquisa']) && !empty($_GET['pesquisa'])){
 
     WHERE contratos.numero_transacao LIKE '%$pesquisa%'
     OR clientes.nome LIKE '%$pesquisa%'
-    OR contratos.status LIKE '%$pesquisa%'
+    OR pagamentos_contrato.status AS status_mes LIKE '%$pesquisa%'
     OR contratos.data_fim LIKE '%$pesquisa%'
 
     ORDER BY contratos.id_contrato DESC
@@ -39,7 +39,7 @@ if(isset($_GET['pesquisa']) && !empty($_GET['pesquisa'])){
     $sql = "
     SELECT 
         contratos.id_contrato,
-        contratos.numero_transacao,
+        contratos.numero_contrato,
         contratos.status,
         contratos.data_fim,
         contratos.total_geral,
@@ -128,6 +128,26 @@ while ($p = $res_pag->fetch_assoc()) {
     $pagamentos_mes[$p['contrato_id']] = $p['status'];
 }
 
+// Busca o status de pagamento do mês atual para cada contrato,
+// direto da tabela pagamentos_contrato (fonte da verdade)
+$mesAtual = date('n');
+$anoAtual = date('Y');
+
+$sqlPagamentosMes = "SELECT contrato_id, status 
+                      FROM pagamentos_contrato 
+                      WHERE mes = ? AND ano = ?";
+
+$stmt = $conn->prepare($sqlPagamentosMes);
+$stmt->bind_param("ii", $mesAtual, $anoAtual);
+$stmt->execute();
+$resultPag = $stmt->get_result();
+
+$pagamentos_mes = [];
+while ($p = $resultPag->fetch_assoc()) {
+    $pagamentos_mes[$p['contrato_id']] = $p['status'];
+}
+$stmt->close();
+
 ?>
 
 
@@ -190,15 +210,21 @@ while ($p = $res_pag->fetch_assoc()) {
                                 
                                 <h1>
                                      <p class="valor">
-                                  <?php
-                            $sql_pagos = "
-                                SELECT COUNT(*) AS total
-                                FROM contratos
-                                WHERE status = 'pago'
-                            ";
-                            $res_pagos = $conn->query($sql_pagos);
-                            $total_pagos = $res_pagos->fetch_assoc()['total'] ?? 0;
-                            ?>
+                                 <?php
+                                $mesAtual = date('n');
+                                $anoAtual = date('Y');
+
+                                $sql_pagos = "
+                                    SELECT COUNT(*) AS total
+                                    FROM pagamentos_contrato
+                                    WHERE mes = ? AND ano = ? AND status = 'pago'
+                                ";
+                                $stmt_pagos = $conn->prepare($sql_pagos);
+                                $stmt_pagos->bind_param("ii", $mesAtual, $anoAtual);
+                                $stmt_pagos->execute();
+                                $total_pagos = $stmt_pagos->get_result()->fetch_assoc()['total'] ?? 0;
+                                $stmt_pagos->close();
+                                ?>
 
                             <h1><?= $total_pagos ?></h1>
                             </p>          
@@ -271,9 +297,9 @@ while ($p = $res_pag->fetch_assoc()) {
             <tr>
                 <th>Nº Contrato</th>
                 <th>Cliente</th>
-                <th>Status</th>
                 <th>Data Fim</th>
-                <th>Total</th>
+                <th>Total</th> 
+                <th>Status</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -285,29 +311,39 @@ while ($p = $res_pag->fetch_assoc()) {
             <tr>
 
                 <td>
-                    <span class="badge"><?= $contrato['numero_transacao'] ?></span>
+                    <span class="badge">Contrato Nº: <?= htmlspecialchars($contrato['numero_contrato'] ?? 'N/D') ?></span>
                 </td>
 
                 <td class="client">
 
                     <?= htmlspecialchars($contrato['nome']) ?>
                 </td>
-                    <?php
-                    $status_mes = $pagamentos_mes[$contrato['id_contrato']] ?? 'pendente';
-                    $labels = ['pago' => 'Pago', 'pendente' => 'Pendente'];
-                    $classes = ['pago' => 'badge-pago', 'pendente' => 'badge-pendente'];
-                    ?>
-                    <td>
-                    <span class="badges <?= $classes[$status_mes] ?>">
-                        <?= $labels[$status_mes] ?>
-                    </span>
-                    </td>
+                  
              
          <td><?= date('d/m/Y', strtotime($contrato['data_fim'])) ?></td>
 
                 <td class="price">
                     <?= number_format($contrato['total_geral'],2,",",".") ?> Akz
                 </td>
+
+                 <?php
+                    $status_mes = $pagamentos_mes[$contrato['id_contrato']] ?? 'pendente';
+                    $labels = [
+                        'pago'      => 'Pago',
+                        'pendente'  => 'Pendente',
+                        'cancelado' => 'Cancelado'
+                    ];
+                    $classes = [
+                        'pago'      => 'badge-pago',
+                        'pendente'  => 'badge-pendente',
+                        'cancelado' => 'badge-cancelado'
+                    ];
+                    ?>
+                    <td>
+                    <span class="badges <?= $classes[$status_mes] ?>">
+                        <?= $labels[$status_mes] ?>
+                    </span>
+                    </td>
 
                 <td class="actions">
                     <a class="btn view" href="fatura_contrato.php?id=<?= $contrato['id_contrato'] ?>">

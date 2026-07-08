@@ -1369,3 +1369,16 @@ tbody tr:nth-child(5){ animation-delay: 0.5s; }
         transform: translateY(0);
     }
 }
+
+
+.bell-trigger{
+    position: relative;
+}
+
+.bolinha-notif{
+    display: none;
+}
+
+.bolinha-notif.show{
+    display: block;
+}

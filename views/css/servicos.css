@@ -753,6 +753,7 @@ main .Recent-Order table{
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 8px;
     margin-top: 10px;
+      width: 450px;
 }
 
 .servico-card {

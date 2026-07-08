@@ -207,12 +207,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'email'     => trim($_POST['email']     ?? '')
     ];
 
+
+
     if(!preg_match("/^[a-zA-ZÀ-ÿ ]+$/u", $dadoscliente['nome'])){
         $erro = "O nome so pode conter letras e espacos.";
     } elseif(!preg_match("/^[0-9]{9}$/", $dadoscliente['telefone'])){
         $erro = "O telefone deve ter 9 digitos e conter apenas numeros.";
     } elseif(!empty($dadoscliente['email']) && !filter_var($dadoscliente['email'], FILTER_VALIDATE_EMAIL)){
         $erro = "O email introduzido nao e valido.";
+    } elseif(!empty($dadoscliente['email'])){
+        // Verifica se já existe um cliente com este email
+        $sqlCheckEmail = "SELECT id_cliente FROM clientes WHERE email = ? LIMIT 1";
+        $stmtCheck = $conn->prepare($sqlCheckEmail);
+        $stmtCheck->bind_param("s", $dadoscliente['email']);
+        $stmtCheck->execute();
+        $stmtCheck->store_result();
+
+        if ($stmtCheck->num_rows > 0) {
+            $erro = "Ja existe um cliente cadastrado com este email.";
+        }
+        $stmtCheck->close();
     }
 
     if($erro == ""){
