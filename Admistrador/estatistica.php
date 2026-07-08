@@ -17,10 +17,16 @@ include("./configuracao/conexao.php");
 $sql_capital = "
 SELECT 
 (
-    (SELECT COALESCE(SUM(total),0) FROM servicos)
+    -- SOMA DOS SERVIÇOS CONCLUÍDOS
+    (SELECT COALESCE(SUM(total),0) FROM servicos WHERE status = 'Concluido')
     +
-    (SELECT COALESCE(SUM(total_geral),0) FROM contratos)
+    -- SOMA DOS PAGAMENTOS DE CONTRATO (mensais, já efectivamente pagos)
+    (SELECT COALESCE(SUM(valor),0) FROM pagamentos_contrato WHERE status = 'pago')
+    +
+    -- ENTRADAS MANUAIS
+    (SELECT COALESCE(SUM(valor),0) FROM capital_empresa WHERE fluxo = 'entrada')
     -
+    -- SAÍDAS DA EMPRESA
     (SELECT COALESCE(SUM(valor),0) FROM capital_empresa WHERE fluxo = 'saida')
 ) AS capital_total
 ";
@@ -207,6 +213,9 @@ $totalServicos = array_sum($statusMap);
 // ═══════════════════════════════════════════
 //   Entradas e Saídas por mês
 // ═══════════════════════════════════════════
+
+$anoAtual = (int) date('Y');
+
 $qEntradas = mysqli_query($conn, "
     SELECT mes, SUM(total) AS total
     FROM (
@@ -218,17 +227,32 @@ $qEntradas = mysqli_query($conn, "
 
         SELECT MONTH(data_registo) AS mes, total AS total
         FROM servicos
-        WHERE status = 'concluido'
+        WHERE status = 'Concluido'
+
+        UNION ALL
+
+        SELECT MONTH(data_registro) AS mes, valor AS total
+        FROM capital_empresa
+        WHERE fluxo = 'entrada'
     ) AS receitas
     GROUP BY mes
     ORDER BY mes
 ");
 
-// Saídas = capital_empresa com fluxo = saida
 $qSaidas = mysqli_query($conn, "
     SELECT MONTH(data_registro) AS mes, SUM(valor) AS total
     FROM capital_empresa
     WHERE fluxo = 'saida'
+    GROUP BY mes
+    ORDER BY mes
+");
+
+// Saídas = capital_empresa com fluxo = saida (apenas ano atual)
+$qSaidas = mysqli_query($conn, "
+    SELECT MONTH(data_registro) AS mes, SUM(valor) AS total
+    FROM capital_empresa
+    WHERE fluxo = 'saida'
+      AND YEAR(data_registro) = $anoAtual
     GROUP BY mes
     ORDER BY mes
 ");
@@ -371,7 +395,7 @@ while ($r = mysqli_fetch_assoc($qStockBaixo)) $produtosBaixos[] = $r;
     <div class="fluxo-resumo">
         <span class="fluxo-tag entrada">▲ <?= number_format($totalEntradas, 0, ',', '.') ?> Kz</span>
         <span class="fluxo-tag saida">▼ <?= number_format($totalSaidas, 0, ',', '.') ?> Kz</span>
-        <span class="fluxo-tag saldo"><?= $saldo >= 0 ?  : '−' ?> <?= number_format(abs($saldo), 0, ',', '.') ?> Kz</span>
+       <span class="fluxo-tag saldo"><?= $saldo >= 0 ? '+' : '−' ?> <?= number_format(abs($saldo), 0, ',', '.') ?> Kz</span>
     </div>
 </div>
  

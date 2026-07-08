@@ -17,7 +17,7 @@ SELECT
     contratos.data_inicio,
     contratos.data_fim,
     contratos.total_geral,
-    pagamentos_contrato.status AS status_mes,
+    COALESCE(pagamentos_contrato.status, 'pendente') AS status_mes,
     clientes.nome
 FROM contratos
 INNER JOIN clientes
@@ -27,12 +27,13 @@ LEFT JOIN pagamentos_contrato
     AND pagamentos_contrato.mes = ?
     AND pagamentos_contrato.ano = ?
 WHERE contratos.numero_contrato LIKE ?
-OR clientes.nome LIKE ?
+   OR clientes.nome LIKE ?
+   OR COALESCE(pagamentos_contrato.status, 'pendente') LIKE ?
 ORDER BY contratos.id_contrato DESC
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iiss", $mesAtual, $anoAtual, $like, $like);
+$stmt->bind_param("iisss", $mesAtual, $anoAtual, $like, $like, $like);
 $stmt->execute();
 $res = $stmt->get_result();
 
@@ -40,8 +41,6 @@ if ($res && $res->num_rows > 0) {
 
     while ($c = $res->fetch_assoc()) {
 
-
-    
 ?>
 
 <tr>
@@ -68,8 +67,7 @@ if ($res && $res->num_rows > 0) {
 
     <td>
         <?php
-            // Se não houver registo de pagamento para o mês atual, trata como pendente
-            $statusMes = $c['status_mes'] ?? 'pendente';
+            $statusMes = $c['status_mes']; // já vem 'pendente' se for NULL
 
             $statusClasses = [
                 'pago'      => 'badge-pago',

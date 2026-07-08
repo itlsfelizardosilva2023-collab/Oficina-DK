@@ -7,55 +7,72 @@ include("./configuracao/conexao.php");
 
 $pesquisa = "";
 
+
 // ================= PESQUISA =================
-if(isset($_GET['pesquisa']) && !empty($_GET['pesquisa'])){
 
-    $pesquisa = mysqli_real_escape_string($conn, $_GET['pesquisa']);
+$mesAtual = (int) date('n');
+$anoAtual = (int) date('Y');
 
-    $sql = "
-    SELECT 
-        contratos.id_contrato,
-        contratos.numero_transacao,
-        pagamentos_contrato.status AS status_mes,
-        contratos.data_fim,
-        contratos.total_geral,
-        clientes.nome
+$pesquisa = trim($_GET['pesquisa'] ?? '');
 
-    FROM contratos
+if ($pesquisa !== '') {
 
-    INNER JOIN clientes
-    ON contratos.id_cliente = clientes.id_cliente
-
-    WHERE contratos.numero_transacao LIKE '%$pesquisa%'
-    OR clientes.nome LIKE '%$pesquisa%'
-    OR pagamentos_contrato.status AS status_mes LIKE '%$pesquisa%'
-    OR contratos.data_fim LIKE '%$pesquisa%'
-
-    ORDER BY contratos.id_contrato DESC
-    ";
-
-}else{
+    $like = "%$pesquisa%";
 
     $sql = "
     SELECT 
         contratos.id_contrato,
         contratos.numero_contrato,
-        contratos.status,
+        contratos.numero_transacao,
+        COALESCE(pagamentos_contrato.status, 'pendente') AS status_mes,
         contratos.data_fim,
         contratos.total_geral,
         clientes.nome
-
     FROM contratos
-
     INNER JOIN clientes
-    ON contratos.id_cliente = clientes.id_cliente
-
+        ON contratos.id_cliente = clientes.id_cliente
+    LEFT JOIN pagamentos_contrato
+        ON pagamentos_contrato.contrato_id = contratos.id_contrato
+        AND pagamentos_contrato.mes = ?
+        AND pagamentos_contrato.ano = ?
+    WHERE contratos.numero_contrato LIKE ?
+       OR clientes.nome LIKE ?
+       OR COALESCE(pagamentos_contrato.status, 'pendente') LIKE ?
+       OR contratos.data_fim LIKE ?
     ORDER BY contratos.id_contrato DESC
     ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iissss", $mesAtual, $anoAtual, $like, $like, $like, $like);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+} else {
+
+    $sql = "
+    SELECT 
+        contratos.id_contrato,
+        contratos.numero_contrato,
+        COALESCE(pagamentos_contrato.status, 'pendente') AS status_mes,
+        contratos.data_fim,
+        contratos.total_geral,
+        clientes.nome
+    FROM contratos
+    INNER JOIN clientes
+        ON contratos.id_cliente = clientes.id_cliente
+    LEFT JOIN pagamentos_contrato
+        ON pagamentos_contrato.contrato_id = contratos.id_contrato
+        AND pagamentos_contrato.mes = ?
+        AND pagamentos_contrato.ano = ?
+    ORDER BY contratos.id_contrato DESC
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $mesAtual, $anoAtual);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
 }
-
-$res = $conn->query($sql);
-
 
 
 // ═══════════════════════════════════════════
