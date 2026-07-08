@@ -147,7 +147,6 @@ while ($p = $resultPag->fetch_assoc()) {
     $pagamentos_mes[$p['contrato_id']] = $p['status'];
 }
 $stmt->close();
-
 ?>
 
 
